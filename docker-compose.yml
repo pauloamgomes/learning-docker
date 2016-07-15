@@ -1,0 +1,44 @@
+data:
+  container_name: data
+  image: busybox
+  volumes:
+    - ./app/data/db:/data/db
+    - ./app/www:/var/www
+    - ./app/logs:/var/log/httpd
+  command: echo 'Data-only container'
+mailhog:
+  container_name: mailhog
+  hostname: mailhog
+  domainname: docker
+  image: diyan/mailhog
+  ports:
+    - "1025:1025"
+    - "8025:8025"
+mongo:
+  container_name: mongo
+  build: ./mongo
+  hostname: mongo
+  domainname: docker
+  volumes_from:
+    - data
+  ports:
+    - "27017:27017"
+  environment:
+    - DEBUG=true
+learninglocker:
+  container_name: learninglocker
+  build: ./locker
+  ports:
+    - "8080:80"
+  expose:
+    - "8080"
+  hostname: learninglocker
+  domainname: docker
+  environment:
+    - VIRTUAL_HOST=learninglocker.docker
+    - DEBUG=true
+  volumes_from:
+    - data
+  links:
+    - mongo
+    - mailhog

@@ -1,0 +1,4 @@
+.DS_Store
+app/www/*
+app/data/*
+app/logs/*
