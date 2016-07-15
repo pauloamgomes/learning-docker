@@ -1,4 +1,4 @@
 .DS_Store
-app/www/*
-app/data/*
-app/logs/*
+app/www/learninglocker
+app/data/db
+app/logs/*_log
