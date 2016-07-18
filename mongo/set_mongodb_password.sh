@@ -2,7 +2,7 @@
 
 USER="root"
 PASS="root"
-DATABASE="ll_staging"
+DATABASE="llocker"
 
 echo "========================================================================"
 echo ""
@@ -23,10 +23,9 @@ db.createUser({user: "${USER}", pwd: "${PASS}", roles: [{role:'root', db:'admin'
 EOF
 
 mongo admin -u ${USER} -p ${PASS} << EOF
-use ll_staging
-db.createUser({user: "${USER}", pwd: "${PASS}", roles: [{role:'readWrite', db:'ll_staging'}]});
+use llocker
+db.createUser({user: "${USER}", pwd: "${PASS}", roles: [{role:'readWrite', db:"${DATABASE}"}]});
 EOF
-
 
 touch /data/db/.mongodb_password_set
 

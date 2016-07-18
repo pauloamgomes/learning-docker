@@ -1,11 +1,3 @@
-data:
-  container_name: data
-  image: busybox
-  volumes:
-    - ./app/data/db:/data/db
-    - ./app/www:/var/www
-    - ./app/logs:/var/log/httpd
-  command: echo 'Data-only container'
 mailhog:
   container_name: mailhog
   hostname: mailhog
@@ -19,8 +11,8 @@ mongo:
   build: ./mongo
   hostname: mongo
   domainname: docker
-  volumes_from:
-    - data
+  volumes:
+    - ./app/data/db:/data/db
   ports:
     - "27017:27017"
   environment:
@@ -37,8 +29,8 @@ learninglocker:
   environment:
     - VIRTUAL_HOST=learninglocker.docker
     - DEBUG=true
-  volumes_from:
-    - data
+  volumes:
+    - ./app/logs:/var/log/httpd
   links:
     - mongo
     - mailhog

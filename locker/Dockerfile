@@ -8,6 +8,8 @@ USER root
 
 MAINTAINER Paulo Gomes
 
+#VOLUME /var/www
+
 # Update image
 RUN yum update -y
 
@@ -27,15 +29,14 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 RUN rm -rf /run/httpd/*; mkdir -p /run/httpd/htcacheclean; chmod 710 /run/httpd; chmod 700 /run/httpd/htcacheclean; chown root:apache /run/httpd; chown apache:apache /run/httpd/htcacheclean
 
 # clone learninglocker via git
-RUN cd /
-RUN git clone https://github.com/LearningLocker/learninglocker.git learninglocker
+RUN git clone https://github.com/LearningLocker/learninglocker.git /learninglocker
 
 # install learninglocker
 RUN cd /learninglocker; composer install
 
 # modify apache settings
 ADD /conf/vhost.conf /etc/httpd/conf.d/vhost.conf
-RUN sed -i "s/^DocumentRoot.*/DocumentRoot \'\/var\/www\/learninglocker\/public\/\'/g" /etc/httpd/conf/httpd.conf
+RUN sed -i "s/^DocumentRoot.*//g" /etc/httpd/conf/httpd.conf
 
 # add local configurations
 ADD ./conf/app.php /learninglocker/app/config/local/app.php
@@ -43,9 +44,7 @@ ADD ./conf/database.php /learninglocker/app/config/local/database.php
 ADD ./conf/mail.php /learninglocker/app/config/local/mail.php
 
 RUN chown -R apache:apache /learninglocker
-
-# modify encryption key .. this is required b/c the default one is only 14 characters
-RUN sed -i "s/'key.*/\'key\' => \'CHANGEME12345678\',/" /learninglocker/app/config/app.php
+RUN cd  /var/www; ln -s /learninglocker
 
 # create our container startup script
 ADD run.sh /usr/bin/run.sh

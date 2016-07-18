@@ -9,7 +9,7 @@ return [
       'port'     => 27017,
       'username' => 'root',
       'password' => 'root',
-      'database' => 'll_staging',
+      'database' => 'llocker',
     ],
   ],
   'migrations' => 'migrations',

@@ -1,1 +1,0 @@
-Apache docroot for learninglocker.
