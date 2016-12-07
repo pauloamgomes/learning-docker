@@ -43,6 +43,10 @@ ADD ./conf/app.php /learninglocker/app/config/local/app.php
 ADD ./conf/database.php /learninglocker/app/config/local/database.php
 ADD ./conf/mail.php /learninglocker/app/config/local/mail.php
 
+# add migrations script
+ADD migrations.sh /migrations.sh
+RUN chmod +x /migrations.sh
+
 RUN chown -R apache:apache /learninglocker
 RUN cd  /var/www; ln -s /learninglocker
 
